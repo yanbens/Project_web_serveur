@@ -34,15 +34,12 @@ model TacheHistory {
   createdAt  DateTime @default(now())
 }
 
-enum Priority {
-  FAIBLE
-  MOYENNE
-  ELEVEE
+model Priority {
+  id                    Int      @id @default(autoincrement()) 
+  description           String?
 }
 
-enum Status {
-  A_FAIRE    @map("À faire")
-  EN_COURS   @map("En cours")
-  EN_REVISION @map("En révision")
-  TERMINEE   @map("Terminée")
+model Status {
+ id                      Int      @id @default(autoincrement()) 
+  description           String?
 }
