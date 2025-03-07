@@ -5,6 +5,16 @@ const router = Router();
 
 //Definition des routes
 
+// Route pour la page d'accueil
+router.get("/", async (request, response) => {
+  response.render("taches", {
+      titre: "Accueil",
+      styles: ["./css/style.css", "./css/index.css"],
+      scripts: ["./js/main.js"],
+      todos: await getTodos(),
+  });
+});
+
 // Route pour obtenir la Liste des tâches
 router.get('/api/taches', async (req, res) => {
     try {
@@ -45,7 +55,7 @@ router.post('/api/taches', async (req, res) => {
         priority: req.body.priority,
         due_date: new Date(req.body.due_date).getTime()
       };
-      await createTache(tache);
+      await createTache(taches);
       res.redirect('/taches');
     } catch (error) {
       console.error('Erreur lors de la création de la tâche:', error);

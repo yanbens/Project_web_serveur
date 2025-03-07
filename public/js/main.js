@@ -29,22 +29,27 @@ const addTodoToClient = (tache) => {
 };
 
 //Fonction pour ajouter une tache
-const addTodoToServer = async (event) => {
+const addTodoToServer = async (event) => 
+    {
     event.preventDefault();
 
     //Preparation des donnees a envoyer
-    const data = {
-        description: todoInput.value,
-    };
-
-    //Envoie de la requete
-    const response = await fetch("/api/todo", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    });
+    const addTodoToServer = async (event) => {
+        event.preventDefault();
+    
+        //Preparation des donnees a envoyer
+        const data = {
+            description: todoInput.value,
+        };
+    
+        //Envoie de la requete
+        const response = await fetch("/api/todo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
     //Traitement de la reponse
     if (response.ok) {
@@ -54,7 +59,7 @@ const addTodoToServer = async (event) => {
         const { error } = await response.json();
         console.error(error);
     }
-};
+}};
 
 //Fonction pour obtenir la liste des taches
 const getTodos = async () => {
@@ -76,4 +81,4 @@ todoForm.addEventListener("submit", (event) => {
     addTodoToServer(event);
 });
 
-getTodos();
+
