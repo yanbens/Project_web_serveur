@@ -1,5 +1,6 @@
-import { Router } from "express";
+import { response, Router } from "express";
 import {  createTache, deleteTache, getAllTaches,  updatedTache } from "./model/taches.js";
+import { validateDescription } from "./validation.js";
 
 const router = Router();
 
@@ -55,14 +56,21 @@ router.post('/api/taches', async (req, res) => {
         priority: req.body.priority,
         due_date: new Date(req.body.due_date).getTime()
       };
+      if (validateDescription (description)){
       await createTache(taches);
       res.redirect('/taches');
-    } catch (error) {
+    }else {
+      return response.status(400).jsoon({
+        error:"description invalide"
+      })
+    }
+    
+   } catch (error) {
       console.error('Erreur lors de la création de la tâche:', error);
       res.status(500).send('Erreur serveur');
     }
   });
-  
+
   // Formulaire de modification
 router.get('/api/taches/:id/edit', async (req, res) => {
     try {
