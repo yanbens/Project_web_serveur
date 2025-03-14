@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+model Tache {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?
+  priority    Priority    @relation(fields: [priorityId], references: [priorityId])
+  priorityId  Int
+  status      Status      @relation(fields: [statusId], references: [statusId])  
+  statusId    Int
+  dueDate     DateTime
+  assignedTo  Int          @default(1)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  history     TacheHistory[]
+}
+
+model TacheHistory {
+  id         Int      @id @default(autoincrement())
+  Tache       Tache    @relation(fields: [tacheId], references: [id])
+  tacheId     Int
+  changedBy  Int      @default(1)
+  changeType String
+  oldValues  String?
+  newValues  String?
+  createdAt  DateTime @default(now())
+}
+
+model Priority {
+  priorityId            Int      @id @default(autoincrement()) 
+  description           String?
+  taches                Tache []
+}
+
+model Status {
+ statusId               Int      @id @default(autoincrement()) 
+  description           String?
+  taches                Tache []
+}
