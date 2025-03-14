@@ -1,0 +1,10 @@
+<h2>Listes des taches </h2>
+
+<ul>
+    {{#each tasks}}
+    <li>
+              <div>{{this.title}}</div>
+            <div>{{this.description}}, {{this.priority}}</div>
+            <div><a href="/proposition/{{this.id_proposition}}">Voir la proposition</a></div>
+        </li>
+    {{/each}}
