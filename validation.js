@@ -7,4 +7,4 @@ return (
     descrition.length >= 5 &&
     descrition.length <= 50
 );
-};
+};;
