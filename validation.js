@@ -1,4 +1,4 @@
-const validateDescription = (descrition) => {
+ export const validateDescription = (descrition) => {
 
 
 return (
