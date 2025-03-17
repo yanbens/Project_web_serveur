@@ -1,0 +1,23 @@
+<h2>Listes des taches </h2>
+
+<ul>
+    {{#each taches}}
+    <li>
+              <div>{{this.title}}</div>
+            <div>{{this.description}}, {{this.priority}}</div>
+            
+        </li>
+    {{/each}}
+
+    <form id="todo-form" novalidate>
+        <input
+            type="text"
+            id="todo-input"
+            placeholder="Ajouter une nouvelle tâche"
+            required
+            minlength="5"
+            maxlength="10"
+        />
+        <button type="submit">Ajouter</button>
+    </form>
+    

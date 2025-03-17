@@ -9,11 +9,13 @@ const prisma = new PrismaClient();
  * @returns la liste des taches
  */
 export async function getAllTaches() {
-    return await prisma.tache.findMany({
+  return await prisma.tache.findMany({
+      
         orderBy: {
             createdAt: 'desc'
         }
     })
+    
 };
 
 /**
@@ -30,6 +32,7 @@ export async function getTacheById(id) {
  * Pour la cration de la tache
  * @param {*} tache
  * @returns tache
+ * 
  */
   export async function createTache(tache) {
     return await prisma.tache.create({
@@ -40,6 +43,7 @@ export async function getTacheById(id) {
         dueDate: new Date(tache.due_date)
       }
     });
+    return tache;
   }
 /**
  * Pour la mise à jour de la tache
@@ -64,7 +68,7 @@ export async function updatedTache(id, tache) {
      // Enregistrement dans l'historique
   await prisma.tacheHistory.create({
     data: {
-      taskId: parseInt(id),
+      tacheId: parseInt(id),
       changeType: 'UPDATE',
       oldValues: JSON.stringify(oldTache),
       newValues: JSON.stringify(tache)
@@ -80,7 +84,7 @@ export async function deleteTache(id) {
     });
   }
   
-  export async function getTacheHistory(taskId) {
+  export async function getTacheHistory(tacheId) {
     return await prisma.tacheHistory.findMany({
       where: { tacheId: parseInt(tacheId) },
       orderBy: { createdAt: 'desc' }

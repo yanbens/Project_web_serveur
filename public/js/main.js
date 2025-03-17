@@ -1,3 +1,4 @@
+import { validateDescription } from "./validation.js";
 // Recupuration des elements du DOM
 const todoForm = document.getElementById("todo-form");
 const todoInput = document.getElementById("todo-input");
@@ -5,8 +6,8 @@ const todoList = document.getElementById("todo-list");
 const todoTemplate = document.getElementById("todo-template");
 
 //Mettre a jour une tache
-const updateTask = async (event) => {
-    await fetch(`/api/todo/${event.target.parentElement.dataset.id}`, {
+const updatedTache = async (event) => {
+    await fetch(`/api/taches/${event.target.parentElement.dataset.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
     });
@@ -29,12 +30,12 @@ const addTodoToClient = (tache) => {
 };
 
 //Fonction pour ajouter une tache
-const addTodoToServer = async (event) => 
+const addTacheToServer = async (event) => 
     {
     event.preventDefault();
 
     //Preparation des donnees a envoyer
-    const addTodoToServer = async (event) => {
+    const addTacheToServer = async (event) => {
         event.preventDefault();
     
         //Preparation des donnees a envoyer
@@ -43,7 +44,7 @@ const addTodoToServer = async (event) =>
         };
     
         //Envoie de la requete
-        const response = await fetch("/api/todo", {
+        const response = await fetch("/api/tache", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -53,8 +54,8 @@ const addTodoToServer = async (event) =>
 
     //Traitement de la reponse
     if (response.ok) {
-        const { todo } = await response.json();
-        addTodoToClient(todo);
+        const { tacheache } = await response.json();
+        addTacheToClient(tache);
     } else {
         const { error } = await response.json();
         console.error(error);
@@ -62,12 +63,12 @@ const addTodoToServer = async (event) =>
 }};
 
 //Fonction pour obtenir la liste des taches
-const getTodos = async () => {
-    const response = await fetch("/api/todos");
+const getAllTaches = async () => {
+    const response = await fetch("/api/taches");
     if (response.ok) {
-        const todos = await response.json();
-        todos.forEach((todo) => {
-            addTodoToClient(todo);
+        const taches = await response.json();
+        taches.forEach((tache) => {
+            addTacheToClient(tache);
         });
     } else {
         const { error } = await response.json();
@@ -78,7 +79,7 @@ const getTodos = async () => {
 //Ajouter event listener sur le formulaire
 todoForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    addTodoToServer(event);
+    addTacheToServer(event);
 });
 
 
