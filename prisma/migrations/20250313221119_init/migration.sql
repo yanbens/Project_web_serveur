@@ -35,8 +35,14 @@ CREATE TABLE "new_Tache" (
     CONSTRAINT "Tache_priorityId_fkey" FOREIGN KEY ("priorityId") REFERENCES "Priority" ("priorityId") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Tache_statusId_fkey" FOREIGN KEY ("statusId") REFERENCES "Status" ("statusId") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
 INSERT INTO "new_Tache" ("assignedTo", "createdAt", "description", "dueDate", "id", "title", "updatedAt") SELECT "assignedTo", "createdAt", "description", "dueDate", "id", "title", "updatedAt" FROM "Tache";
 DROP TABLE "Tache";
 ALTER TABLE "new_Tache" RENAME TO "Tache";
 PRAGMA foreign_keys=ON;
 PRAGMA defer_foreign_keys=OFF;
+
+
+INSERT INTO Priority (priorityId, description) VALUES (1, 'Faible'), (2, 'Moyenne'), (3, 'Haute');
+
+INSERT INTO Status (statusId, description) VALUES (1, 'À faire'), (2, 'En cours'), (3, 'Terminé');

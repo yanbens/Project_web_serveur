@@ -1,43 +1,43 @@
-//Doit etre en debut de fichier pour charger les variables d'environnement
+
 import "dotenv/config";
-
-//importer les routes
-import routerExterne from "./routes.js";
-
-// Importation des fichiers et librairies
-import { engine } from "express-handlebars";
 import express, { json } from "express";
+import { engine } from "express-handlebars";
 import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
 import cspOption from "./csp-options.js";
+import router from "./routes.js";
 
-// Crréation du serveur express
 const app = express();
-app.engine("handlebars", engine()); //Pour indiquer a express que l'on utilise handlebars
-app.set("view engine", "handlebars"); //Pour indiquer le rendu des vues
-app.set("views", "./Views"); //Pour indiquer le dossier des vues
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Ajout de middlewares
+// Configuration Handlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./Views");
+
+// Middlewares de sécurité et d'optimisation
 app.use(helmet(cspOption));
 app.use(compression());
 app.use(cors());
 app.use(json());
 
-//Middeleware integre a express pour gerer la partie static du serveur
-//le dossier 'public' est la partie statique de notre serveur
+// Servir les fichiers statiques depuis "public"
 app.use(express.static("public"));
 
-// Ajout des routes
-app.use(routerExterne);
+// Ajouter les routes
+app.use(router);
 
-// Renvoyer une erreur 404 pour les routes non définies
-app.use((request, response) => {
-    // Renvoyer simplement une chaîne de caractère indiquant que la page n'existe pas
-    response.status(404).send(`${request.originalUrl} Route introuvable.`);
+// Gestion des erreurs 404 pour les routes non définies
+app.use((req, res) => {
+    res.status(404).send(`${req.originalUrl} - Route introuvable.`);
 });
 
-//Démarrage du serveur
-app.listen(process.env.PORT);
-console.info("Serveur démarré :");
-console.info(`http://localhost:${process.env.PORT}`);
+// Définition du port avec fallback pour local
+const PORT = process.env.PORT || 3000;
+
+// Démarrage du serveur
+app.listen(PORT, () => {
+    console.info(`✅ Serveur démarré sur : http://localhost:${PORT}`);
+});

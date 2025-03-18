@@ -1,0 +1,37 @@
+<div>
+    <h1>Modifier la Tâche</h1>
+
+    {{#each taches}}
+    <form action="/taches/{{this.id}}" method="POST">
+        <div>
+            <label>Titre</label>
+            <input type="text" name="title" value="{{this.title}}" required>
+        </div>
+
+        <div>
+            <label>Description</label>
+            <textarea name="description" rows="4">{{this.description}}</textarea>
+        </div>
+
+        <div>
+            <label>Priorité</label>
+            <input type="text" name="priority" value="{{this.priority}}" required>
+        </div>
+
+        <div>
+            <label>Status</label>
+            <input type="text" name="status" value="{{this.status}}" required>
+        </div>
+
+        <div>
+            <label>Date limite</label>
+            <input type="datetime-local" name="due_date" value="{{formatDateInput this.due_date}}" required>
+        </div>
+
+        <div>
+            <a href="/taches">Annuler</a>
+            <button type="submit">Mettre à jour</button>
+        </div>
+    </form>
+    {{/each}}
+</div>

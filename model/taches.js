@@ -1,92 +1,115 @@
-// importer ler client prisma
+// Importer Prisma Client
 import { PrismaClient } from "@prisma/client";
 
-//Creer une instance de prisma
+// Créer une instance de Prisma
 const prisma = new PrismaClient();
 
 /**
- * Obtenir la liste de toutes les taches
- * @returns la liste des taches
+ * ✅ Obtenir toutes les tâches avec leur priorité et statut
+ * @returns Liste des tâches
  */
 export async function getAllTaches() {
-  return await prisma.tache.findMany({
-      
-        orderBy: {
-            createdAt: 'desc'
-        }
-    })
-    
-};
+    return await prisma.tache.findMany({
+        include: {
+            priority: true,
+            status: true,
+        },
+        orderBy: { dueDate: "asc" },
+    });
+}
 
 /**
- * Pour obtenir la liste de tout les taches par ID
- * @param {*} id
- * @returns la liste des taches 
+ * ✅ Obtenir une tâche par son ID
+ * @param {number} id - ID de la tâche
+ * @returns Tâche avec priorité et statut
  */
 export async function getTacheById(id) {
     return await prisma.tache.findUnique({
-      where: { id: parseInt(id) }
+        where: { id: Number(id) },
+        include: {
+            priority: true,
+            status: true,
+        },
     });
-  }
-  /**
- * Pour la cration de la tache
- * @param {*} tache
- * @returns tache
- * 
- */
-  export async function createTache(tache) {
-    return await prisma.tache.create({
-      data: {
-        title: tache.title,
-        description: tache.description,
-        priority: tache.priority.toUpperCase(),
-        dueDate: new Date(tache.due_date)
-      }
-    });
-    return tache;
-  }
-/**
- * Pour la mise à jour de la tache
- * @param {*} id 
- * @returns tache
- */
-
-export async function updatedTache(id, tache) {
-    const oldTache = await getTacheById(id);
-    
-    const updatedTache = await prisma.tache.update({
-      where: { id: parseInt(id) },
-      data: {
-        title: tache.title,
-        description: tache.description,
-        priority: tache.priority.toUpperCase(),
-        status: tache.status.replace(/ /g, '_').toUpperCase(),
-        dueDate: new Date(tache.due_date)
-      }
-    });
-
-     // Enregistrement dans l'historique
-  await prisma.tacheHistory.create({
-    data: {
-      tacheId: parseInt(id),
-      changeType: 'UPDATE',
-      oldValues: JSON.stringify(oldTache),
-      newValues: JSON.stringify(tache)
-    }
-  });
-
-  return updatedTache;
 }
 
+/**
+ * ✅ Créer une nouvelle tâche
+ * @param {Object} taskData - Données de la tâche
+ * @returns Tâche créée
+ */
+export async function createTache({ title, description, priorityId, statusId, dueDate }) {
+    return await prisma.tache.create({
+        data: {
+            title,
+            description,
+            priorityId: Number(priorityId),
+            statusId: Number(statusId),
+            dueDate: new Date(dueDate),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+    });
+}
+
+/**
+ * ✅ Mettre à jour une tâche et enregistrer l'historique des changements
+ * @param {number} id - ID de la tâche
+ * @param {Object} taskData - Nouvelles données de la tâche
+ * @returns Tâche mise à jour
+ */
+export async function updatedTache(id, { title, description, priorityId, statusId, dueDate }) {
+    const oldTache = await getTacheById(id);
+
+    const updatedTache = await prisma.tache.update({
+        where: { id: Number(id) },
+        data: {
+            title,
+            description,
+            priorityId: Number(priorityId),
+            statusId: Number(statusId),
+            dueDate: new Date(dueDate),
+            updatedAt: new Date(),
+        },
+    });
+
+    // ✅ Ajouter l'historique des changements
+    await prisma.tacheHistory.create({
+        data: {
+            tacheId: Number(id),
+            changeType: "UPDATE",
+            oldValues: JSON.stringify(oldTache),
+            newValues: JSON.stringify(updatedTache),
+        },
+    });
+
+    return updatedTache;
+}
+
+/**
+ * ✅ Supprimer une tâche
+ * @param {number} id - ID de la tâche
+ * @returns Suppression réussie
+ */
 export async function deleteTache(id) {
+    // Supprimer l'historique avant de supprimer la tâche pour éviter les conflits FK
+    await prisma.tacheHistory.deleteMany({
+        where: { tacheId: Number(id) },
+    });
+
     return await prisma.tache.delete({
-      where: { id: parseInt(id) }
+        where: { id: Number(id) },
     });
-  }
-  
-  export async function getTacheHistory(tacheId) {
+}
+
+/**
+ * ✅ Obtenir l'historique des modifications d'une tâche
+ * @param {number} tacheId - ID de la tâche
+ * @returns Historique des modifications
+ */
+export async function getTacheHistory(tacheId) {
     return await prisma.tacheHistory.findMany({
-      where: { tacheId: parseInt(tacheId) },
-      orderBy: { createdAt: 'desc' }
+        where: { tacheId: Number(tacheId) },
+        orderBy: { createdAt: "desc" },
     });
-  }
+}

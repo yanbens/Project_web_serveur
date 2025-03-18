@@ -1,0 +1,15 @@
+<h2>Liste des tâches</h2>
+
+<ul class="tasks">
+    {{#each taches}}
+    <li class="{{#if pinned}}pinned{{/if}}">
+        <h3>{{this.title}}</h3>
+        <p>Description: {{this.description}}</p>
+        <p>Priorité: <strong>{{this.priority}}</strong></p>
+        <p>Échéance: {{this.due_date}}</p>
+        <p>Épinglée: {{#if this.pinned}}✅ Oui{{else}}❌ Non{{/if}}</p>
+    </li>
+    {{/each}}
+</ul>
+
+<a href="/creer_Tache"><button>Créer une nouvelle tâche</button></a>

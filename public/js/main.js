@@ -40,7 +40,7 @@ const addTacheToServer = async (event) =>
     
         //Preparation des donnees a envoyer
         const data = {
-            description: todoInput.value,
+            description: tacheInput.value,
         };
     
         //Envoie de la requete
@@ -54,7 +54,7 @@ const addTacheToServer = async (event) =>
 
     //Traitement de la reponse
     if (response.ok) {
-        const { tacheache } = await response.json();
+        const { tache } = await response.json();
         addTacheToClient(tache);
     } else {
         const { error } = await response.json();

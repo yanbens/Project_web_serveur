@@ -1,23 +1,41 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        {{#each styles}}
-            <link rel="stylesheet" href={{this}} />
-        {{/each}}
+    {{#each styles}}
+        <link rel="stylesheet" href="{{this}}">
+    {{/each}}
 
-        {{#each scripts}}
-            <script src={{this}} type="module"></script>
-        {{/each}}
+    {{#each scripts}}
+        <script src="{{this}}" type="module"></script>
+    {{/each}}
 
-        <title>{{titre}}</title>
-    </head>
-    <body>
-        
-        <main>
-            {{{body}}}
-        </main>
-        <footer>&copy; Yanis bensalem</footer>
-    </body>
+    <title>{{titre}}</title>
+</head>
+<body>
+    <header>
+        <h1>Gérer les tâches</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/creer_Tache">Créer une tâche</a></li>
+                <li><a href="/taches">Mes Tâches</a></li>
+                <li><a href="/edit">Modifier une tâche</a></li>
+                <li><a href="/se-connecter">Se Connecter</a></li>
+            </ul>
+            <div>
+                <input type="text" name="search" placeholder="Rechercher...">
+                <button type="submit">Rechercher</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {{{body}}}
+    </main>
+
+    <footer>&copy; Yanis Bensalem</footer>
+</body>
 </html>
