@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createTache, deleteTache, getAllTaches, updatedTache, getTacheById } from "./model/taches.js";
 import { validateDescription } from "./validation.js";
-import { Prisma } from "@prisma/client";
+
 const router = Router();
 
 // 🏠 Home Page: Show all tasks
@@ -42,17 +42,7 @@ router.post("/api/taches", async (req, res) => {
             return res.status(400).json({ error: "PriorityId ou StatusId invalide." });
         }
 
-        // ✅ Vérifier si les ID existent dans la base
-        const priorityExists = await Prisma.priority.findUnique({ where: { priorityId } });
-        const statusExists = await Prisma.status.findUnique({ where: { statusId } });
-
-        if (!priorityExists || !statusExists) {
-            return res.status(400).json({ error: "PriorityId ou StatusId n'existe pas dans la base." });
-        }
-
-        if (!validateDescription(description)) {
-            return res.status(400).json({ error: "La description doit contenir entre 5 et 255 caractères." });
-        }
+        
 
         // ✅ Créer la tâche
         await createTache({

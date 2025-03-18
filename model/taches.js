@@ -39,12 +39,23 @@ export async function getTacheById(id) {
  * @returns Tâche créée
  */
 export async function createTache({ title, description, priorityId, statusId, dueDate }) {
+    priorityId = Number(priorityId);
+    statusId = Number(statusId);
+
+    // Vérifier si les ID existent
+    const priorityExists = await prisma.priority.findUnique({ where: { priorityId } });
+    const statusExists = await prisma.status.findUnique({ where: { statusId } });
+
+    if (!priorityExists || !statusExists) {
+        throw new Error("PriorityId ou StatusId n'existe pas dans la base.");
+    }
+
     return await prisma.tache.create({
         data: {
             title,
             description,
-            priorityId: Number(priorityId),
-            statusId: Number(statusId),
+            priorityId,
+            statusId,
             dueDate: new Date(dueDate),
             createdAt: new Date(),
             updatedAt: new Date(),
