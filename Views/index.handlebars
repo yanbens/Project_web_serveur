@@ -2,14 +2,26 @@
 
 <ul class="tasks">
     {{#each taches}}
-    <li class="{{#if pinned}}pinned{{/if}}">
+    <li class="{{#if this.pinned}}pinned{{/if}}">
         <h3>{{this.title}}</h3>
         <p>Description: {{this.description}}</p>
         <p>Priorité: <strong>{{this.priority}}</strong></p>
         <p>Échéance: {{this.due_date}}</p>
         <p>Épinglée: {{#if this.pinned}}✅ Oui{{else}}❌ Non{{/if}}</p>
+
+      
+<!-- ✅ Modifier Button -->
+<a href="/edit/{{this.id}}" class="btn action-btn btn-edit">Modifier</a>
+
+        <!-- Bouton Supprimer -->
+        <!-- ✅ Supprimer Button -->
+<form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
+    <button type="submit" class="btn action-btn btn-delete">Supprimer</button>
+</form>
     </li>
     {{/each}}
 </ul>
 
-<a href="/creer_Tache"><button>Créer une nouvelle tâche</button></a>
+<!-- Bouton pour créer une nouvelle tâche -->
+<!-- ✅ Ajouter Button -->
+<a href="/creer_Tache" class="btn action-btn btn-add">Ajouter une tâche</a>

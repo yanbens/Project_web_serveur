@@ -23,13 +23,10 @@ export async function getAllTaches() {
  * @param {number} id - ID de la tâche
  * @returns Tâche avec priorité et statut
  */
+// ✅ Fonction pour récupérer une tâche par ID
 export async function getTacheById(id) {
     return await prisma.tache.findUnique({
-        where: { id: Number(id) },
-        include: {
-            priority: true,
-            status: true,
-        },
+        where: { id: Number(id) }, // 👈 Convertir en nombre pour éviter l'erreur
     });
 }
 

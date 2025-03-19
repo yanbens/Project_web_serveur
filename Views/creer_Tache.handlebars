@@ -1,28 +1,32 @@
-<h2>Créer une nouvelle tâche</h2>
+<h2>Créer une Nouvelle Tâche</h2>
 
 <form action="/api/taches" method="POST">
-    <label>Titre:</label>
+    <label for="title">Titre :</label>
     <input type="text" name="title" required>
 
-    <label>Description:</label>
-    <textarea name="description" required minlength="5" maxlength="255"></textarea>
+    <label for="description">Description :</label>
+    <textarea name="description" required></textarea>
 
-    <label>Priorité:</label>
+    <label for="priorityId">Priorité :</label>
     <select name="priorityId">
         <option value="1">Faible</option>
-        <option value="2" selected>Moyenne</option>
+        <option value="2">Moyenne</option>
         <option value="3">Haute</option>
     </select>
 
-    <label>Statut:</label>
+    <label for="statusId">Statut :</label>
     <select name="statusId">
         <option value="1">À faire</option>
         <option value="2">En cours</option>
         <option value="3">Terminé</option>
     </select>
-
+    
     <label>Date d'échéance:</label>
     <input type="datetime-local" name="due_date" required>
 
-    <button type="submit">Créer la tâche</button>
+    <label>
+        <input type="checkbox" name="pinned"> Épingler cette tâche
+    </label>
+
+    <button type="submit">Créer</button>
 </form>

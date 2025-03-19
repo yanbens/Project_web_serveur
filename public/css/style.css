@@ -211,3 +211,54 @@ footer {
     border-left: 5px solid gold;
 }
 
+
+/* ✅ General Button Style */
+.action-btn {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    color: white;
+}
+
+/* ✅ Modifier Button */
+.btn-edit {
+    background-color: var(--primary-color); /* Default Button Color */
+}
+
+.btn-edit:hover {
+    background-color: #16a085;
+    transform: scale(1.05);
+}
+
+/* ✅ Supprimer Button */
+.btn-delete {
+    background-color: var(--error-color); /* Red */
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* ✅ Ajouter Button */
+.btn-add {
+    background-color: #27ae60; /* Green */
+}
+
+.btn-add:hover {
+    background-color: #219150;
+    transform: scale(1.05);
+}
+
+/* ✅ Button Click Effect */
+.action-btn:active {
+    transform: scale(0.98);
+}
+

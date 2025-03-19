@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { createTache, deleteTache, getAllTaches, updatedTache, getTacheById } from "./model/taches.js";
-import { validateDescription } from "./validation.js";
+
 
 const router = Router();
 
-// 🏠 Home Page: Show all tasks
+// 🏠 Home Page: Afficher toutes les tâches
 router.get("/", async (req, res) => {
     try {
         const taches = await getAllTaches();
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-// ➕ Show Create Task Form
+// ➕ Formulaire de création de tâche
 router.get("/creer_Tache", (req, res) => {
     res.render("creer_Tache", {
         titre: "Créer une Tâche",
@@ -27,22 +27,19 @@ router.get("/creer_Tache", (req, res) => {
     });
 });
 
-// ✅ Handle Task Creation
+// ✅ Création d'une nouvelle tâche
 router.post("/api/taches", async (req, res) => {
     try {
-        console.log("📝 Données reçues :", req.body); // Debug: Voir les données envoyées
+        console.log("📝 Données reçues :", req.body);
 
         let { title, description, priorityId, statusId, due_date, pinned } = req.body;
 
-        // ✅ Vérifier si priorityId et statusId existent et sont valides
         priorityId = Number(priorityId);
         statusId = Number(statusId);
 
         if (isNaN(priorityId) || isNaN(statusId)) {
             return res.status(400).json({ error: "PriorityId ou StatusId invalide." });
         }
-
-        
 
         // ✅ Créer la tâche
         await createTache({
@@ -61,7 +58,7 @@ router.post("/api/taches", async (req, res) => {
     }
 });
 
-// ✅ Show Task List
+// ✅ Liste des tâches
 router.get("/taches", async (req, res) => {
     try {
         const taches = await getAllTaches();
@@ -76,25 +73,31 @@ router.get("/taches", async (req, res) => {
     }
 });
 
-// ✅ Show Edit Task Page
+
+// ✅ Route pour modifier une tâche
 router.get("/edit/:id", async (req, res) => {
     try {
-        const tache = await getTacheById(req.params.id);
-        if (!tache) {
-            return res.status(404).send("Tâche introuvable");
+        const id = req.params.id;
+        console.log("🔍 ID reçu pour modification :", id); // Debug
+
+        if (!id || isNaN(id)) {
+            return res.status(400).send("❌ Erreur : ID invalide.");
         }
-        res.render("edit", {
-            titre: "Modifier la Tâche",
-            styles: ["/css/style.css"],
-            tache,
-        });
+
+        const tache = await getTacheById(id);
+        if (!tache) {
+            return res.status(404).send("❌ Tâche introuvable");
+        }
+
+        res.render("edit", { titre: "Modifier la Tâche", styles: ["/css/style.css"], tache });
     } catch (error) {
-        console.error("❌ Erreur lors de la récupération de la tâche:", error);
+        console.error("❌ Erreur lors du chargement de la page d'édition :", error);
         res.status(500).send("Erreur serveur");
     }
 });
 
-// ✅ Handle Task Update
+
+// ✅ Mettre à jour une tâche
 router.put("/api/taches/:id", async (req, res) => {
     try {
         const { title, description, priorityId, statusId, due_date, pinned } = req.body;
@@ -108,7 +111,11 @@ router.put("/api/taches/:id", async (req, res) => {
             pinned: pinned === "on",
         };
 
-        await updatedTache(req.params.id, tache);
+        const updated = await updatedTache(req.params.id, tache);
+        if (!updated) {
+            return res.status(404).json({ error: "Tâche introuvable" });
+        }
+
         res.json({ message: "Tâche mise à jour avec succès" });
     } catch (error) {
         console.error("❌ Erreur lors de la mise à jour de la tâche:", error);
@@ -116,10 +123,13 @@ router.put("/api/taches/:id", async (req, res) => {
     }
 });
 
-// ✅ Handle Task Deletion
+// ✅ Supprimer une tâche
 router.delete("/api/taches/:id", async (req, res) => {
     try {
-        await deleteTache(req.params.id);
+        const deleted = await deleteTache(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ error: "Tâche introuvable" });
+        }
         res.json({ message: "Tâche supprimée avec succès" });
     } catch (error) {
         console.error("❌ Erreur lors de la suppression de la tâche:", error);
@@ -127,4 +137,5 @@ router.delete("/api/taches/:id", async (req, res) => {
     }
 });
 
+// ✅ Exporter le routeur
 export default router;

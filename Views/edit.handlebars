@@ -1,37 +1,32 @@
-<div>
-    <h1>Modifier la Tâche</h1>
+<form action="/api/taches/{{tache.id}}?_method=PUT" method="POST">
+    {{#if errors}}
+        <ul class="error-list">
+            {{#each errors}}
+                <li class="error">{{this}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
 
-    {{#each taches}}
-    <form action="/taches/{{this.id}}" method="POST">
-        <div>
-            <label>Titre</label>
-            <input type="text" name="title" value="{{this.title}}" required>
-        </div>
+    <input type="text" name="title" value="{{tache.title}}" required>
+    <textarea name="description">{{tache.description}}</textarea>
 
-        <div>
-            <label>Description</label>
-            <textarea name="description" rows="4">{{this.description}}</textarea>
-        </div>
+    <label for="priority">Priorité :</label>
+    <select name="priorityId">
+        <option value="1" {{#if (eq tache.priorityId 1)}}selected{{/if}}>Faible</option>
+        <option value="2" {{#if (eq tache.priorityId 2)}}selected{{/if}}>Moyenne</option>
+        <option value="3" {{#if (eq tache.priorityId 3)}}selected{{/if}}>Haute</option>
+    </select>
 
-        <div>
-            <label>Priorité</label>
-            <input type="text" name="priority" value="{{this.priority}}" required>
-        </div>
+    <label for="status">Statut :</label>
+    <select name="statusId">
+        <option value="1" {{#if (eq tache.statusId 1)}}selected{{/if}}>À faire</option>
+        <option value="2" {{#if (eq tache.statusId 2)}}selected{{/if}}>En cours</option>
+        <option value="3" {{#if (eq tache.statusId 3)}}selected{{/if}}>Terminé</option>
+    </select>
+<label>Date d'échéance:</label>
+    <input type="datetime-local" name="due_date" required>
 
-        <div>
-            <label>Status</label>
-            <input type="text" name="status" value="{{this.status}}" required>
-        </div>
-
-        <div>
-            <label>Date limite</label>
-            <input type="datetime-local" name="due_date" value="{{formatDateInput this.due_date}}" required>
-        </div>
-
-        <div>
-            <a href="/taches">Annuler</a>
-            <button type="submit">Mettre à jour</button>
-        </div>
-    </form>
-    {{/each}}
-</div>
+    <button type="submit">Mettre à jour</button>
+    <button type="submit" href="/taches">Annuler</button>
+            
+</form>

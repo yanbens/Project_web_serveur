@@ -5,8 +5,32 @@
             <li><a href="/">Accueil</a></li>
             <li><a href="/creer_Tache">Créer une tâche</a></li>
             <li><a href="/taches">Mes Tâches</a></li>
-            <li><a href="/edit/1">Modifier une tâche</a></li> <!-- Example ID -->
+             <li><a href="/edit/1">Modifier une tâche</a></li>
         </ul>
-       
     </nav>
 </header>
+
+<h2>Liste des tâches</h2>
+
+<ul class="tasks">
+    {{#each taches}}
+    <li class="{{#if this.pinned}}pinned{{/if}}">
+        <h3>{{this.title}}</h3>
+        <p>Description: {{this.description}}</p>
+        <p>Priorité: <strong>{{this.priority}}</strong></p>
+        <p>Échéance: {{this.due_date}}</p>
+        <p>Épinglée: {{#if this.pinned}}✅ Oui{{else}}❌ Non{{/if}}</p>
+
+        <!-- Bouton Modifier -->
+        <a href="/edit/{{this.id}}" class="btn">Modifier</a>
+
+        <!-- Bouton Supprimer -->
+        <form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" onclick="return confirm('Voulez-vous vraiment supprimer cette tâche ?')">🗑 Supprimer</button>
+        </form>
+    </li>
+    {{/each}}
+</ul>
+
+<!-- Bouton pour créer une nouvelle tâche -->
+<a href="/creer_Tache"><button>Créer une nouvelle tâche</button></a>
