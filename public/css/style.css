@@ -16,9 +16,16 @@
 }
 
 body {
+    height: 100%;
+  margin: 0;    
+  display: flex;
+  flex-direction: column;
     background-color: var(--light-bg);
     color: var(--dark-text);
     padding: 20px;
+}
+.main-content {
+    flex: 1; 
 }
 
 /* ====== Header and Navigation ====== */
@@ -102,7 +109,18 @@ form {
     flex-direction: column;
     gap: 15px;
 }
-
+form h2 {
+    text-align: center;
+    color: #2c3e50; 
+    margin-bottom: 20px;
+    font-size: 1.8em;
+  }
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #34495e; 
+  }
 input, textarea {
     width: 100%;
     padding: 10px;
@@ -160,6 +178,7 @@ ul.tasks li .description {
 
 /* ====== Footer ====== */
 footer {
+    position: relative;
     text-align: center;
     margin-top: 30px;
     padding: 15px;
@@ -167,6 +186,7 @@ footer {
     color: var(--light-text);
     font-size: 14px;
     border-radius: 5px;
+    width: 100%;
 }
 
 /* ====== Responsive Design ====== */
