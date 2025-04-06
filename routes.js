@@ -8,11 +8,98 @@ import {
     getTacheHistory 
 } from "./model/taches.js";
 import { validateTaskData } from "./validation.js";
+import { addUser } from "./model/user.js";
 
 const router = Router();
+// Definition des routes 
+// Route pour ajouter un utilisateur
 
+//Route pour la connexion
+router.post("/connexion", (request, response, next) => {
+    // On vérifie le le courriel et le mot de passe
+    // envoyé sont valides
+    if (
+        isEmailValid(request.body.email) &&
+        isPasswordValid(request.body.password)
+    ) {
+        // On lance l'authentification avec passport.js
+        passport.authenticate("local", (erreur, user, info) => {
+            if (erreur) {
+                // S'il y a une erreur, on la passe
+                // au serveur
+                next(erreur);
+            } else if (!user) {
+                // Si la connexion échoue, on envoit
+                // l'information au client avec un code
+                // 401 (Unauthorized)
+                response.status(401).json(info);
+            } else {
+                // Si tout fonctionne, on ajoute
+                // l'utilisateur dans la session et
+                // on retourne un code 200 (OK)
+                request.logIn(user, (erreur) => {
+                    if (erreur) {
+                        next(erreur);
+                    }
+                    // On retourne l'utilisateur au client
+                    if (!request.session.user) {
+                        request.session.user = user;
+                    }
+                    response.status(200).json({
+                        message: "Connexion réussie",
+                        user,
+                    });
+                });
+            }
+        })(request, response, next);
+    } else {
+        response.status(400).json({
+            error: "Email ou mot de passe invalide",
+        });
+    }
+});
+
+//Route deconnexion
+router.post("/deconnexion", (request, response) => {
+    //Protection de la route
+    if (!request.session.user) {
+        response.status(401).end();
+        return;
+    }
+    // Déconnecter l'utilisateur
+    request.logOut((erreur) => {
+        if (erreur) {
+            next(erreur);
+        }
+        // Rediriger l'utilisateur vers une autre page
+        response.redirect("/");
+    });
+});
+
+//Route pour ajouter un utilisateur
+router.post("/inscription", async (request, response) => {
+    try {
+        const { email, password, nom } = request.body;
+        const user = await addUser(email, password, nom);
+        return response.status(200).json({
+            user,
+            message: "Utilisateur ajouté avec succès",
+        });
+    } catch (error) {
+        if (error.code === "P2002") {
+            return response.status(400).json({
+                error: "L'email existe déjà.",
+            });
+        }
+        return response.status(400).json({ error: error.message });
+    }
+});
 // 🏠 Accueil : Afficher toutes les tâches
 router.get("/", async (req, res) => {
+    if (!req.session.id_user) {
+        req.session.id_user = 123;
+    }
+    
     try {
         const taches = await getAllTaches();
         res.render("index", { titre: "Accueil", styles: ["/css/style.css"], taches });

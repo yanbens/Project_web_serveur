@@ -8,16 +8,29 @@
 </head>
 <body>
 
-    <header>
+    {{> header}}
         <h1>Gestion des Tâches</h1>
         <nav>
             <ul>
                 <li><a href="/">Accueil</a></li>
+                {{#if user}}
                 <li><a href="/creer_Tache">Créer une tâche</a></li>
                 <li><a href="/taches">Mes Tâches</a></li>
+
+                 <form method="post" action="/deconnexion">
+                <input type="submit" value="Deconnexion" />
+            </form>
+                  {{#unless user}}
+                <a href="/connexion">Connexion</a>
+        {{/unless}}
+
+        {{#if isAdmin}}
+                <a href="/admin">ADMIN</a>
+        {{/if}}
+
             </ul>
         </nav>
-    </header>
+   
 
     <main>
         {{{body}}}

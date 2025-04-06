@@ -1,7 +1,8 @@
+
 <h2>Liste des tâches</h2>
 
 <ul class="tasks">
-    {{#each taches}}
+     {{#each taches}}
     <li class="{{#if this.pinned}}pinned{{/if}}">
         <h3>{{this.title}}</h3>
         <p>Description: {{this.description}}</p>

@@ -47,3 +47,11 @@ model Status {
   description           String?
   taches                Tache []
 }
+
+model user {
+  id            Int       @id @default(autoincrement()) 
+  email         String    @unique
+  password      String
+  nom           String
+  type          String
+}
