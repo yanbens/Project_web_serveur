@@ -9,74 +9,53 @@ import {
 } from "./model/taches.js";
 import { validateTaskData } from "./validation.js";
 import { addUser } from "./model/user.js";
+import passport from "passport";
 
 const router = Router();
-// Definition des routes 
-// Route pour ajouter un utilisateur
 
-//Route pour la connexion
-router.post("/connexion", (request, response, next) => {
-    // On vérifie le le courriel et le mot de passe
-    // envoyé sont valides
-    if (
-        isEmailValid(request.body.email) &&
-        isPasswordValid(request.body.password)
-    ) {
-        // On lance l'authentification avec passport.js
-        passport.authenticate("local", (erreur, user, info) => {
-            if (erreur) {
-                // S'il y a une erreur, on la passe
-                // au serveur
-                next(erreur);
-            } else if (!user) {
-                // Si la connexion échoue, on envoit
-                // l'information au client avec un code
-                // 401 (Unauthorized)
-                response.status(401).json(info);
-            } else {
-                // Si tout fonctionne, on ajoute
-                // l'utilisateur dans la session et
-                // on retourne un code 200 (OK)
-                request.logIn(user, (erreur) => {
-                    if (erreur) {
-                        next(erreur);
-                    }
-                    // On retourne l'utilisateur au client
-                    if (!request.session.user) {
-                        request.session.user = user;
-                    }
-                    response.status(200).json({
-                        message: "Connexion réussie",
-                        user,
-                    });
-                });
-            }
-        })(request, response, next);
-    } else {
-        response.status(400).json({
-            error: "Email ou mot de passe invalide",
-        });
-    }
+// ✅ Route GET - Page de connexion
+router.get("/connexion", (req, res) => {
+    res.render("connexion", {
+        titre: "Connexion",
+        styles: ["/css/style.css"]
+    });
 });
 
-//Route deconnexion
-router.post("/deconnexion", (request, response) => {
-    //Protection de la route
+// ✅ Route GET - Page d'inscription
+router.get("/inscription", (req, res) => {
+    res.render("inscription", {
+        titre: "Inscription",
+        styles: ["/css/style.css"]
+    });
+});
+
+// ✅ Route POST - Connexion avec passport
+router.post("/connexion", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json(info);
+
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            req.session.user = user;
+            res.redirect("/");
+        });
+    })(req, res, next);
+});
+
+// ✅ Route de déconnexion
+router.post("/deconnexion", (request, response, next) => {
     if (!request.session.user) {
         response.status(401).end();
         return;
     }
-    // Déconnecter l'utilisateur
     request.logOut((erreur) => {
-        if (erreur) {
-            next(erreur);
-        }
-        // Rediriger l'utilisateur vers une autre page
+        if (erreur) return next(erreur);
         response.redirect("/");
     });
 });
 
-//Route pour ajouter un utilisateur
+// ✅ Route POST - Inscription
 router.post("/inscription", async (request, response) => {
     try {
         const { email, password, nom } = request.body;
@@ -94,15 +73,15 @@ router.post("/inscription", async (request, response) => {
         return response.status(400).json({ error: error.message });
     }
 });
+
 // 🏠 Accueil : Afficher toutes les tâches
 router.get("/", async (req, res) => {
     if (!req.session.id_user) {
         req.session.id_user = 123;
     }
-    
     try {
         const taches = await getAllTaches();
-        res.render("index", { titre: "Accueil", styles: ["/css/style.css"], taches });
+        res.render("index", { titre: "Accueil", styles: ["/css/style.css"], taches, user: req.session.user });
     } catch (error) {
         console.error("❌ Erreur lors du chargement de la page d'accueil:", error);
         res.status(500).send("Erreur serveur");
@@ -120,7 +99,6 @@ router.post("/api/taches", async (req, res) => {
         console.log("📝 Données reçues :", req.body);
         const { title, description, priorityId, statusId, due_date, pinned } = req.body;
 
-        // Vérifier si les données sont valides
         if (!validateTaskData({ title, description, priorityId, statusId, due_date })) {
             return res.status(400).json({ error: "Données invalides" });
         }
@@ -181,7 +159,7 @@ router.get("/taches/:id/history", async (req, res) => {
 router.get("/edit/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("🔍 ID reçu pour modification :", id); // Debug
+        console.log("🔍 ID reçu pour modification :", id);
 
         if (!id || isNaN(id)) {
             return res.status(400).send("❌ Erreur : ID invalide.");
@@ -251,7 +229,7 @@ router.patch("/api/taches/:id/complete", async (req, res) => {
             return res.status(404).json({ error: "Tâche introuvable" });
         }
 
-        const updatedTache = await updatedTache(req.params.id, { statusId: 3 }); // 3 = Terminé
+        const updatedTache = await updatedTache(req.params.id, { statusId: 3 });
         res.json({ message: "Tâche marquée comme terminée", tache: updatedTache });
     } catch (error) {
         console.error("❌ Erreur lors de la mise à jour du statut de la tâche:", error);

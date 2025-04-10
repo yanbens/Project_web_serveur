@@ -1,284 +1,134 @@
-/* ====== Global Styles ====== */
-:root {
-    --primary-color: #1abc9c;
-    --secondary-color: #2c3e50;
-    --light-bg: #ecf0f1;
-    --dark-text: #2c3e50;
-    --light-text: #ecf0f1;
-    --error-color: #e74c3c;
-}
-
-* {
+/* ====== BASE ====== */
+body {
+    font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
 }
 
-body {
-    height: 100%;
-  margin: 0;    
-  display: flex;
-  flex-direction: column;
-    background-color: var(--light-bg);
-    color: var(--dark-text);
-    padding: 20px;
-}
-.main-content {
-    flex: 1; 
-}
-
-/* ====== Header and Navigation ====== */
-header {
-    background-color: var(--secondary-color);
-    color: var(--light-text);
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-    font-size: 24px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: var(--light-text);
+a {
+    color: #007bff;
     text-decoration: none;
-    font-size: 16px;
-    padding: 8px 12px;
-    transition: 0.3s;
+}
+a:hover {
+    text-decoration: underline;
 }
 
-nav ul li a:hover {
-    background-color: var(--primary-color);
-    border-radius: 5px;
+h1, h2 {
+    color: #222;
 }
 
-/* ====== Search Bar ====== */
-header div {
-    display: flex;
-    align-items: center;
-}
-
-header input[type="text"] {
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-}
-
-header button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 8px;
-    transition: 0.3s;
-}
-
-header button:hover {
-    background-color: #16a085;
-}
-
-/* ====== Main Content ====== */
-main {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
+/* ====== CONTAINER ====== */
+.container,
+.auth-container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 20px 30px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* ====== Forms ====== */
+/* ====== FORMULAIRES ====== */
 form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-form h2 {
-    text-align: center;
-    color: #2c3e50; 
-    margin-bottom: 20px;
-    font-size: 1.8em;
-  }
-label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #34495e; 
-  }
-input, textarea {
-    width: 100%;
+
+form label {
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
     padding: 10px;
-    border: 1px solid var(--secondary-color);
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-input:focus, textarea:focus {
-    border-color: var(--primary-color);
-}
-
-button[type="submit"] {
-    background-color: var(--primary-color);
-    color: white;
+/* ====== BOUTONS ====== */
+input[type="submit"],
+button,
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    padding: 10px 15px;
-    font-size: 16px;
+    padding: 12px;
+    border-radius: 6px;
     cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
+    font-size: 15px;
 }
 
-button[type="submit"]:hover {
-    background-color: #16a085;
+input[type="submit"]:hover,
+button:hover,
+.btn-primary:hover {
+    background-color: #0056b3;
 }
 
-/* ====== Task List ====== */
+/* ====== LISTES DE TÂCHES ====== */
 ul.tasks {
     list-style: none;
     padding: 0;
 }
 
 ul.tasks li {
-    background-color: var(--light-bg);
-    padding: 12px;
-    border-left: 5px solid var(--primary-color);
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-ul.tasks li .titre {
-    font-weight: bold;
-    color: var(--secondary-color);
-}
-
-ul.tasks li .description {
-    font-size: 14px;
-    color: var(--dark-text);
-}
-
-/* ====== Footer ====== */
-footer {
-    position: relative;
-    text-align: center;
-    margin-top: 30px;
+    background: #fff;
     padding: 15px;
-    background-color: var(--secondary-color);
-    color: var(--light-text);
-    font-size: 14px;
-    border-radius: 5px;
-    width: 100%;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    position: relative;
 }
 
-/* ====== Responsive Design ====== */
-@media (max-width: 768px) {
-    nav ul {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav ul li {
-        margin: 10px 0;
-    }
-
-    header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    header div {
-        margin-top: 10px;
-    }
-
-    main {
-        width: 90%;
-    }
+ul.tasks li.pinned {
+    border-left: 5px solid #007bff;
 }
 
-.tasks {
-    list-style: none;
-    padding: 0;
-}
-
-.tasks li {
-    background: white;
-    padding: 12px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.tasks .pinned {
-    border-left: 5px solid gold;
-}
-
-
-/* ✅ General Button Style */
+/* ====== ACTIONS ====== */
 .action-btn {
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-right: 10px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
     text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease-in-out;
-    text-align: center;
+}
+
+.btn-edit {
+    background: #ffc107;
+    color: #000;
+}
+.btn-edit:hover {
+    background: #e0a800;
+}
+
+.btn-delete {
+    background: #dc3545;
     color: white;
 }
-
-/* ✅ Modifier Button */
-.btn-edit {
-    background-color: var(--primary-color); /* Default Button Color */
-}
-
-.btn-edit:hover {
-    background-color: #16a085;
-    transform: scale(1.05);
-}
-
-/* ✅ Supprimer Button */
-.btn-delete {
-    background-color: var(--error-color); /* Red */
-}
-
 .btn-delete:hover {
-    background-color: #c0392b;
-    transform: scale(1.05);
+    background: #b02a37;
 }
 
-/* ✅ Ajouter Button */
 .btn-add {
-    background-color: #27ae60; /* Green */
+    background: #28a745;
+    color: white;
 }
-
 .btn-add:hover {
-    background-color: #219150;
-    transform: scale(1.05);
+    background: #218838;
 }
 
-/* ✅ Button Click Effect */
-.action-btn:active {
-    transform: scale(0.98);
+/* ====== UTIL ====== */
+.text-center {
+    text-align: center;
 }
-
+.mt-3 {
+    margin-top: 1rem;
+}

@@ -9,36 +9,39 @@
 <body>
 
     {{> header}}
-        <h1>Gestion des Tâches</h1>
+
+    <div class="container">
+        <h1 class="text-center">Gestion des Tâches</h1>
         <nav>
-            <ul>
+            <ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0;">
                 <li><a href="/">Accueil</a></li>
                 {{#if user}}
-                <li><a href="/creer_Tache">Créer une tâche</a></li>
-                <li><a href="/taches">Mes Tâches</a></li>
+                    <li><a href="/creer_Tache">Créer une tâche</a></li>
+                    <li><a href="/taches">Mes Tâches</a></li>
+                    <li>
+                        <form method="post" action="/deconnexion">
+                            <input type="submit" value="Deconnexion" class="btn-delete" />
+                        </form>
+                    </li>
+                {{else}}
+                    <li><a href="/connexion">Connexion</a></li>
+                    <li><a href="/inscription">S’inscrire</a></li>
+                {{/if}}
 
-                 <form method="post" action="/deconnexion">
-                <input type="submit" value="Deconnexion" />
-            </form>
-                  {{#unless user}}
-                <a href="/connexion">Connexion</a>
-        {{/unless}}
-
-        {{#if isAdmin}}
-                <a href="/admin">ADMIN</a>
-        {{/if}}
-
+                {{#if isAdmin}}
+                    <li><a href="/admin">ADMIN</a></li>
+                {{/if}}
             </ul>
         </nav>
-   
 
-    <main>
-        {{{body}}}
-    </main>
+        <main>
+            {{{body}}}
+        </main>
 
-    <footer>
-        <p>&copy; 2025 - Gestion des Tâches :Realiser par :yanis bensalem</p>
-    </footer>
+        <footer class="text-center mt-3">
+            <p>&copy; 2025 - Gestion des Tâches | Réalisé par : Yanis Bensalem</p>
+        </footer>
+    </div>
 
 </body>
 </html>

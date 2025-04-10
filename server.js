@@ -8,18 +8,18 @@ import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
 import methodOverride from "method-override";
-
 import session from "express-session";
 import memorystore from "memorystore";
 import passport from "passport";
+import fs from "fs";
+import https from "https";
 
 import routerExterne from "./routes.js";
 import cspOption from "./csp-options.js";
+import "./authentification.js"; // config de passport
 
 // 🚀 Création de l'app Express
 const app = express();
-
-// 🧠 Initialisation du stockage de session en mémoire
 const MemoryStore = memorystore(session);
 
 // ⚙️ Configuration de Handlebars avec helper personnalisé
@@ -44,7 +44,7 @@ app.use(json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-// 🔐 Session + Passport
+// 🔐 Sessions + Passport
 app.use(
     session({
         cookie: { maxAge: 3600000 },
@@ -64,14 +64,19 @@ app.use(express.static("public"));
 // 📍 Routes
 app.use(routerExterne);
 
-// ❌ Erreur 404
+// ❌ 404
 app.use((req, res) => {
     res.status(404).send(`${req.originalUrl} Route introuvable.`);
 });
 
-// ✅ Lancement du serveur
+// ✅ Lancement du serveur HTTPS
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.info("✅ Serveur démarré :");
-    console.info(`http://localhost:${PORT}`);
+const httpsOptions = {
+    key: fs.readFileSync("./ssl/key.pem"),
+    cert: fs.readFileSync("./ssl/cert.pem"),
+};
+
+https.createServer(httpsOptions, app).listen(PORT, () => {
+    console.info("✅ Serveur HTTPS démarré :");
+    console.info(`https://localhost:${PORT}`);
 });

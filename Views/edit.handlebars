@@ -1,32 +1,41 @@
-<form action="/api/taches/{{tache.id}}?_method=PUT" method="POST">
-    {{#if errors}}
-        <ul class="error-list">
-            {{#each errors}}
-                <li class="error">{{this}}</li>
-            {{/each}}
-        </ul>
-    {{/if}}
+<div class="container">
+    <h2 class="text-center">Modifier la Tâche</h2>
 
-    <input type="text" name="title" value="{{tache.title}}" required>
-    <textarea name="description">{{tache.description}}</textarea>
+    <form action="/api/taches/{{tache.id}}?_method=PUT" method="POST">
+        {{#if errors}}
+            <ul class="error-list">
+                {{#each errors}}
+                    <li class="error">{{this}}</li>
+                {{/each}}
+            </ul>
+        {{/if}}
 
-    <label for="priority">Priorité :</label>
-    <select name="priorityId">
-        <option value="1" {{#if (eq tache.priorityId 1)}}selected{{/if}}>Faible</option>
-        <option value="2" {{#if (eq tache.priorityId 2)}}selected{{/if}}>Moyenne</option>
-        <option value="3" {{#if (eq tache.priorityId 3)}}selected{{/if}}>Haute</option>
-    </select>
+        <label for="title">Titre :</label>
+        <input type="text" name="title" value="{{tache.title}}" required>
 
-    <label for="status">Statut :</label>
-    <select name="statusId">
-        <option value="1" {{#if (eq tache.statusId 1)}}selected{{/if}}>À faire</option>
-        <option value="2" {{#if (eq tache.statusId 2)}}selected{{/if}}>En cours</option>
-        <option value="3" {{#if (eq tache.statusId 3)}}selected{{/if}}>Terminé</option>
-    </select>
-<label>Date d'échéance:</label>
-    <input type="datetime-local" name="due_date" required>
+        <label for="description">Description :</label>
+        <textarea name="description" rows="4">{{tache.description}}</textarea>
 
-    <button type="submit">Mettre à jour</button>
-    <button type="submit" href="/taches">Annuler</button>
-            
-</form>
+        <label for="priority">Priorité :</label>
+        <select name="priorityId">
+            <option value="1" {{#if (eq tache.priorityId 1)}}selected{{/if}}>Faible</option>
+            <option value="2" {{#if (eq tache.priorityId 2)}}selected{{/if}}>Moyenne</option>
+            <option value="3" {{#if (eq tache.priorityId 3)}}selected{{/if}}>Haute</option>
+        </select>
+
+        <label for="status">Statut :</label>
+        <select name="statusId">
+            <option value="1" {{#if (eq tache.statusId 1)}}selected{{/if}}>À faire</option>
+            <option value="2" {{#if (eq tache.statusId 2)}}selected{{/if}}>En cours</option>
+            <option value="3" {{#if (eq tache.statusId 3)}}selected{{/if}}>Terminé</option>
+        </select>
+
+        <label for="due_date">Date d'échéance:</label>
+        <input type="datetime-local" name="due_date" required>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn-edit">Mettre à jour</button>
+            <a href="/taches" class="btn-delete" style="text-align: center; padding: 12px;">Annuler</a>
+        </div>
+    </form>
+</div>

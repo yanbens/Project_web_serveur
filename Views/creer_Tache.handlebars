@@ -1,32 +1,34 @@
-<h2>Créer une Nouvelle Tâche</h2>
+<div class="container">
+    <h2 class="text-center">Créer une Nouvelle Tâche</h2>
 
-<form action="/api/taches" method="POST">
-    <label for="title">Titre :</label>
-    <input type="text" name="title" required>
+    <form action="/api/taches" method="POST">
+        <label for="title">Titre :</label>
+        <input type="text" name="title" required>
 
-    <label for="description">Description :</label>
-    <textarea name="description" required></textarea>
+        <label for="description">Description :</label>
+        <textarea name="description" rows="4" required></textarea>
 
-    <label for="priorityId">Priorité :</label>
-    <select name="priorityId">
-        <option value="1">Faible</option>
-        <option value="2">Moyenne</option>
-        <option value="3">Haute</option>
-    </select>
+        <label for="priorityId">Priorité :</label>
+        <select name="priorityId">
+            <option value="1">Faible</option>
+            <option value="2">Moyenne</option>
+            <option value="3">Haute</option>
+        </select>
 
-    <label for="statusId">Statut :</label>
-    <select name="statusId">
-        <option value="1">À faire</option>
-        <option value="2">En cours</option>
-        <option value="3">Terminé</option>
-    </select>
-    
-    <label>Date d'échéance:</label>
-    <input type="datetime-local" name="due_date" required>
+        <label for="statusId">Statut :</label>
+        <select name="statusId">
+            <option value="1">À faire</option>
+            <option value="2">En cours</option>
+            <option value="3">Terminé</option>
+        </select>
 
-    <label>
-        <input type="checkbox" name="pinned"> Épingler cette tâche
-    </label>
+        <label for="due_date">Date d'échéance:</label>
+        <input type="datetime-local" name="due_date" required>
 
-    <button type="submit">Créer</button>
-</form>
+        <label style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" name="pinned"> Épingler cette tâche
+        </label>
+
+        <button type="submit" class="btn-add">Créer</button>
+    </form>
+</div>

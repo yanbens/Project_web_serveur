@@ -1,15 +1,14 @@
-<h2>Listes des taches </h2>
+<div class="container">
+    <h2 class="text-center">Liste des Tâches</h2>
 
-<ul>
-    {{#each taches}}
-    <li>
-              <div>{{this.title}}</div>
-            <div>{{this.description}}, {{this.priority}}</div>
-            
+    <ul class="tasks">
+        {{#each taches}}
+        <li>
+            <div><strong>{{this.title}}</strong></div>
+            <div>{{this.description}}, Priorité : <strong>{{this.priority}}</strong></div>
         </li>
-    {{/each}}
+        {{/each}}
+    </ul>
 
-   
-        <a href="/creer_Tache" class="btn action-btn btn-add">Ajouter une tâche</a>
-    </form>
-    
+    <a href="/creer_Tache" class="btn-add">Ajouter une tâche</a>
+</div>

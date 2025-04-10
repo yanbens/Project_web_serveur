@@ -1,28 +1,35 @@
+<div class="container">
+    <h2 class="text-center">Liste des tâches</h2>
 
-<h2>Liste des tâches</h2>
+    {{#if user}}
+        <p>Bonjour, {{user.nom}} 👋</p>
+        <form action="/deconnexion" method="POST">
+            <button type="submit" class="btn-delete">Se déconnecter</button>
+        </form>
+    {{else}}
+        <p class="text-center">
+            <a href="/connexion">Se connecter</a> |
+            <a href="/inscription">S’inscrire</a>
+        </p>
+    {{/if}}
 
-<ul class="tasks">
-     {{#each taches}}
-    <li class="{{#if this.pinned}}pinned{{/if}}">
-        <h3>{{this.title}}</h3>
-        <p>Description: {{this.description}}</p>
-        <p>Priorité: <strong>{{this.priority}}</strong></p>
-        <p>Échéance: {{this.due_date}}</p>
-        <p>Épinglée: {{#if this.pinned}}✅ Oui{{else}}❌ Non{{/if}}</p>
+    <ul class="tasks">
+        {{#each taches}}
+        <li class="{{#if this.pinned}}pinned{{/if}}">
+            <h3>{{this.title}}</h3>
+            <p>Description: {{this.description}}</p>
+            <p>Priorité: <strong>{{this.priority}}</strong></p>
+            <p>Échéance: {{this.due_date}}</p>
+            <p>Épinglée: {{#if this.pinned}}✅ Oui{{else}}❌ Non{{/if}}</p>
 
-      
-<!-- ✅ Modifier Button -->
-<a href="/edit/{{this.id}}" class="btn action-btn btn-edit">Modifier</a>
+            <a href="/edit/{{this.id}}" class="btn-edit">Modifier</a>
 
-        <!-- Bouton Supprimer -->
-        <!-- ✅ Supprimer Button -->
-<form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
-    <button type="submit" class="btn action-btn btn-delete">Supprimer</button>
-</form>
-    </li>
-    {{/each}}
-</ul>
+            <form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn-delete">Supprimer</button>
+            </form>
+        </li>
+        {{/each}}
+    </ul>
 
-<!-- Bouton pour créer une nouvelle tâche -->
-<!-- ✅ Ajouter Button -->
-<a href="/creer_Tache" class="btn action-btn btn-add">Ajouter une tâche</a>
+    <a href="/creer_Tache" class="btn-add">Ajouter une tâche</a>
+</div>
