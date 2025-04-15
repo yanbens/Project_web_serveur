@@ -33,7 +33,7 @@ passport.use(
 passport.serializeUser((user, done) => {
     done(null, user.email);
 });
-
+// test
 passport.deserializeUser(async (email, done) => {
     try {
         const user = await getUserByEmail(email);
