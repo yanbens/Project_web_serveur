@@ -54,7 +54,7 @@ router.post("/deconnexion", (request, response, next) => {
         response.redirect("/");
     });
 });
-
+// test 
 // ✅ Route POST - Inscription
 router.post("/inscription", async (request, response) => {
     try {
