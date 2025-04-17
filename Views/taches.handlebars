@@ -4,8 +4,16 @@
     <ul class="tasks">
         {{#each taches}}
         <li>
-            <div><strong>{{this.title}}</strong></div>
-            <div>{{this.description}}, Priorité : <strong>{{this.priority}}</strong></div>
+            <h3>{{this.title}}</h3>
+            <p>{{this.description}}</p>
+            <p>Priorité : <strong>{{this.priority.description}}</strong></p>
+            <p>Statut : <strong>{{this.status.description}}</strong></p>
+            <p>Échéance : {{this.dueDate}}</p>
+
+            <a href="/edit/{{this.id}}" class="btn-edit">Modifier</a>
+            <form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn-delete">Supprimer</button>
+            </form>
         </li>
         {{/each}}
     </ul>

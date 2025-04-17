@@ -1,15 +1,14 @@
 <header>
     <h1 class="text-center">Gestion des Tâches</h1>
     <nav>
-        <ul class="nav-list">
+        <ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0;">
             <li><a href="/">Accueil</a></li>
-
             {{#if user}}
                 <li><a href="/creer_Tache">Créer une tâche</a></li>
                 <li><a href="/taches">Mes Tâches</a></li>
                 <li>
                     <form method="post" action="/deconnexion">
-                        <input type="submit" value="Déconnexion" class="btn-delete" />
+                        <input type="submit" value="Deconnexion" class="btn-delete" />
                     </form>
                 </li>
             {{else}}

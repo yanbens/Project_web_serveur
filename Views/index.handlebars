@@ -1,35 +1,29 @@
-<div class="container">
-    <h2 class="text-center">Liste des tâches</h2>
+{{#if user}}
+    <p class="mt-2">Bonjour, <strong>{{user.nom}}</strong> 👋</p>
 
-    {{#if user}}
-        <p>Bonjour, {{user.nom}} 👋</p>
-        <form action="/deconnexion" method="POST">
-            <button type="submit" class="btn-delete">Se déconnecter</button>
-        </form>
-    {{else}}
-        <p class="text-center">
-            <a href="/connexion">Se connecter</a> |
-            <a href="/inscription">S’inscrire</a>
-        </p>
-    {{/if}}
-
-    <ul class="tasks">
+    <ul class="list-unstyled">
         {{#each taches}}
-        <li class="{{#if this.pinned}}pinned{{/if}}">
-            <h3>{{this.title}}</h3>
-            <p>Description: {{this.description}}</p>
-            <p>Priorité: <strong>{{this.priority}}</strong></p>
-            <p>Échéance: {{this.due_date}}</p>
-            <p>Épinglée: {{#if this.pinned}}✅ Oui{{else}}❌ Non{{/if}}</p>
+        <li class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{this.title}}</h5>
+                <p class="card-text">Description: {{this.description}}</p>
+                <p class="card-text">Priorité: <strong>{{this.priority.description}}</strong></p>
+                <p class="card-text">Statut: <strong>{{this.status.description}}</strong></p>
+                <p class="card-text">Échéance: {{this.dueDate}}</p>
 
-            <a href="/edit/{{this.id}}" class="btn-edit">Modifier</a>
-
-            <form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
-                <button type="submit" class="btn-delete">Supprimer</button>
-            </form>
+                <a href="/edit/{{this.id}}" class="btn btn-warning">Modifier</a>
+                <form action="/api/taches/{{this.id}}?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
         </li>
         {{/each}}
     </ul>
 
-    <a href="/creer_Tache" class="btn-add">Ajouter une tâche</a>
-</div>
+    <a href="/creer_Tache" class="btn btn-success mt-3">Ajouter une tâche</a>
+{{else}}
+    <div class="alert alert-warning text-center mt-3">
+        Vous devez <a href="/connexion" class="alert-link">vous connecter</a> ou
+        <a href="/inscription" class="alert-link">vous inscrire</a> pour gérer vos tâches.
+    </div>
+{{/if}}

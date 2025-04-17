@@ -22,12 +22,14 @@ import "./authentification.js"; // config de passport
 const app = express();
 const MemoryStore = memorystore(session);
 
-// ⚙️ Configuration de Handlebars avec helper personnalisé
+// ⚙️ Configuration de Handlebars avec partials et layout
 app.engine(
     "handlebars",
     engine({
         extname: ".handlebars",
-        defaultLayout: false,
+        defaultLayout: "Main", // ✅ Utilise layouts/Main.handlebars
+        layoutsDir: "./views/layouts", // ✅ Dossier des layouts
+        partialsDir: "./views/partials", // ✅ Dossier des partials
         helpers: {
             eq: (a, b) => a === b,
         },

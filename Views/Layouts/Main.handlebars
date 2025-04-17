@@ -1,47 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{titre}}</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-
-    {{> header}}
-
     <div class="container">
-        <h1 class="text-center">Gestion des Tâches</h1>
-        <nav>
-            <ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0;">
-                <li><a href="/">Accueil</a></li>
-                {{#if user}}
-                    <li><a href="/creer_Tache">Créer une tâche</a></li>
-                    <li><a href="/taches">Mes Tâches</a></li>
-                    <li>
-                        <form method="post" action="/deconnexion">
-                            <input type="submit" value="Deconnexion" class="btn-delete" />
-                        </form>
-                    </li>
-                {{else}}
-                    <li><a href="/connexion">Connexion</a></li>
-                    <li><a href="/inscription">S’inscrire</a></li>
-                {{/if}}
-
-                {{#if isAdmin}}
-                    <li><a href="/admin">ADMIN</a></li>
-                {{/if}}
-            </ul>
-        </nav>
+        {{> Header}}
 
         <main>
             {{{body}}}
         </main>
 
-        <footer class="text-center mt-3">
-            <p>&copy; 2025 - Gestion des Tâches | Réalisé par : Yanis Bensalem</p>
-        </footer>
+        {{> footer}}
     </div>
-
 </body>
 </html>
